@@ -284,6 +284,14 @@ The following metrics are filtered for the domain ID provided (the others remain
 * `openstack_nova_limits_instances_max`
 * `openstack_nova_limits_instances_used`
 
+#### Sharev2
+
+* `openstack_sharev2_quota_shares`
+* `openstack_sharev2_quota_gigabytes`
+* `openstack_sharev2_quota_snapshots`
+* `openstack_sharev2_quota_snapshot_gigabytes`
+* `openstack_sharev2_quota_share_networks`
+
 ### Cache mechanism
 
 Enabling the cache with `--cache` changes the exporter's metric collection and delivery:
@@ -373,6 +381,11 @@ quota_member | loadbalancer
 quota_healthmonitor | loadbalancer
 quota_l7policy | loadbalancer
 quota_l7rule | loadbalancer
+quota_shares | sharev2
+quota_gigabytes | sharev2
+quota_snapshots | sharev2
+quota_snapshot_gigabytes | sharev2
+quota_share_networks | sharev2
 image_bytes | glance
 image_created_at | glance
 
@@ -542,6 +555,11 @@ openstack_placement_resource_reserved| hostname="compute-01",resourcetype="DISK_
 openstack_placement_resource_total| hostname="compute-01",resourcetype="DISK_GB\|PCPU\|VCPU\|..."                                                                                                                                                                                                                                                           |80 (float)| Total resources
 openstack_placement_resource_usage| hostname="compute-01",resourcetype="DISK_GB\|PCPU\|VCPU\|..."                                                                                                                                                                                                                                                           |40 (float)| Used resources
 openstack_placement_up| region="RegionOne"                                                                                                                                                                                                                                                                                                            |1.0 (float)| Service status (1=up, 0=down)
+openstack_sharev2_quota_gigabytes| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|120.0 (float)| Share size (GB) quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_sharev2_quota_share_networks| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|1.0 (float)| Share network count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_sharev2_quota_shares| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|3.0 (float)| Share count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_sharev2_quota_snapshot_gigabytes| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|20.0 (float)| Share snapshot size (GB) quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_sharev2_quota_snapshots| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|2.0 (float)| Share snapshot count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
 openstack_sharev2_share_gb| availability_zone="az1",id="4be93e2e-ffff-ffff-ffff-603e3ec2a5d6",name="share-test",project_id="ffff8fa0ca1a468db8ad00970c1effff",share_proto="NFS",share_type="az1",share_type_name="",status="available"                                                                                                                        |1.0 (float)| Share size in GB
 openstack_sharev2_share_status_counter| status="available"                                                                                                                                                                                                                                                                                             |1.0 (float)| Share status counter
 openstack_sharev2_share_status| id="4be93e2e-ffff-ffff-ffff-603e3ec2a5d6",name="share-test",project_id="ffff8fa0ca1a468db8ad00970c1effff",share_proto="NFS",share_type="az1",share_type_name="",size="1",status="available"                                                                                                                                    |1.0 (float)| Share status

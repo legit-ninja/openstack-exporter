@@ -1,0 +1,30 @@
+{
+    "quota_set": {
+        "id": "0c4e939acacf4376bdcd1129f1a054ad",
+        "gigabytes": {
+            "in_use": 120,
+            "limit": 2048,
+            "reserved": 10
+        },
+        "shares": {
+            "in_use": 3,
+            "limit": 50,
+            "reserved": 1
+        },
+        "snapshot_gigabytes": {
+            "in_use": 20,
+            "limit": 1000,
+            "reserved": 0
+        },
+        "snapshots": {
+            "in_use": 2,
+            "limit": -1,
+            "reserved": 0
+        },
+        "share_networks": {
+            "in_use": 1,
+            "limit": 20,
+            "reserved": 0
+        }
+    }
+}
