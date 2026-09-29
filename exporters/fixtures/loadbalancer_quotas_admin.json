@@ -1,0 +1,11 @@
+{
+    "quota": {
+        "load_balancer": 5,
+        "listener": 20,
+        "member": 100,
+        "pool": 10,
+        "health_monitor": 10,
+        "l7policy": 50,
+        "l7rule": 100
+    }
+}

@@ -265,6 +265,16 @@ The following metrics are filtered for the domain ID provided (the others remain
 * `openstack_identity_projects`
 * `openstack_identity_project_info`
 
+#### Loadbalancer
+
+* `openstack_loadbalancer_quota_loadbalancer`
+* `openstack_loadbalancer_quota_listener`
+* `openstack_loadbalancer_quota_pool`
+* `openstack_loadbalancer_quota_member`
+* `openstack_loadbalancer_quota_healthmonitor`
+* `openstack_loadbalancer_quota_l7policy`
+* `openstack_loadbalancer_quota_l7rule`
+
 #### Nova
 
 * `openstack_nova_limits_vcpus_max`
@@ -356,6 +366,13 @@ limits_backup_used_gb | cinder
 quota_volumes | cinder
 quota_snapshots | cinder
 quota_backups | cinder
+quota_loadbalancer | loadbalancer
+quota_listener | loadbalancer
+quota_pool | loadbalancer
+quota_member | loadbalancer
+quota_healthmonitor | loadbalancer
+quota_l7policy | loadbalancer
+quota_l7rule | loadbalancer
 image_bytes | glance
 image_created_at | glance
 
@@ -427,6 +444,13 @@ openstack_ironic_up| region="RegionOne"                                         
 openstack_loadbalancer_amphora_status| cert_expiration="2020-08-08T23:44:31Z",compute_id="667bb225-69aa-44b1-8908-694dc624c267",ha_ip="10.0.0.6",id="45f40289-0551-483a-b089-47214bc2a8a4",lb_network_ip="192.168.0.6",loadbalancer_id="882f2a9d-9d53-4bd0-b0e9-08e9d0de11f9",role="MASTER",status="READY"                                                   | 2.0 (float)| Amphora status
 openstack_loadbalancer_loadbalancer_status | id="607226db-27ef-4d41-ae89-f2a800e9c2db",name="best_load_balancer",operating_status="ONLINE",project_id="e3cd678b11784734bc366148aa37580e",provider="octavia",provisioning_status="ACTIVE",vip_address="203.0.113.50"                                                                                                | 0 (float)| Load balancer status
 openstack_loadbalancer_pool_status| id="ca00ed86-94e3-440e-95c6-ffa35531081e",lb_algorithm="ROUND_ROBIN",loadbalancers="e7284bb2-f46a-42ca-8c9b-e08671255125",name="my_test_pool",operating_status="ERROR",project_id="8b1632d90bfe407787d9996b7f662fd7",protocol="TCP",provisioning_status="ACTIVE"                                                   | 2.0 (float)| Pool status
+openstack_loadbalancer_quota_healthmonitor| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|-1.0 (float)| Health monitor quota limit of the tenant (type=limit only; -1 = unlimited)
+openstack_loadbalancer_quota_l7policy| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|-1.0 (float)| L7 policy quota limit of the tenant (type=limit only; -1 = unlimited)
+openstack_loadbalancer_quota_l7rule| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|-1.0 (float)| L7 rule quota limit of the tenant (type=limit only; -1 = unlimited)
+openstack_loadbalancer_quota_listener| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|10.0 (float)| Listener quota of the tenant, one series per type (in_use, limit; -1 = unlimited). in_use is counted from the load balancer list
+openstack_loadbalancer_quota_loadbalancer| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|10.0 (float)| Load balancer quota of the tenant, one series per type (in_use, limit; -1 = unlimited). in_use is counted from the load balancer list
+openstack_loadbalancer_quota_member| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|-1.0 (float)| Member quota limit of the tenant (type=limit only; -1 = unlimited)
+openstack_loadbalancer_quota_pool| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"|10.0 (float)| Pool quota of the tenant, one series per type (in_use, limit; -1 = unlimited). in_use is counted from the load balancer list
 openstack_loadbalancer_total_amphorae|                                                                                                                                                                                                                                                                                                                       | 2 (float)| Total number of amphorae
 openstack_loadbalancer_total_loadbalancers|                                                                                                                                                                                                                                                                                                                       | 2 (float)| Total number of load balancers
 openstack_loadbalancer_total_pools|                                                                                                                                                                                                                                                                                                                       | 2 (float)| Total number of pools
