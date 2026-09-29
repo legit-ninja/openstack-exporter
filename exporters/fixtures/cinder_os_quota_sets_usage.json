@@ -6,7 +6,7 @@
             "reserved": 0
         },
         "backups": {
-            "in_use": 0,
+            "in_use": 2,
             "limit": 10,
             "reserved": 0
         },
@@ -32,8 +32,8 @@
             "reserved": 0
         },
         "snapshots": {
-            "in_use": 0,
-            "limit": 10,
+            "in_use": 1,
+            "limit": 20,
             "reserved": 0
         },
         "snapshots___DEFAULT__": {
@@ -42,9 +42,9 @@
             "reserved": 0
         },
         "volumes": {
-            "in_use": 0,
+            "in_use": 2,
             "limit": 10,
-            "reserved": 0
+            "reserved": 1
         },
         "volumes___DEFAULT__": {
             "in_use": 0,

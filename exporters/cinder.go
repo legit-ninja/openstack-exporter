@@ -50,6 +50,9 @@ func mapVolumeStatus(volStatus string) int {
 	return mapStatus(knownVolumeStatuses, volStatus)
 }
 
+// Labels of the per-project quota metrics, identical to the Nova quota metrics.
+var defaultCinderQuotaLabels = []string{"type", "tenant", "tenant_id"}
+
 var defaultCinderMetrics = []Metric{
 	{Name: "volumes", Fn: ListVolumes},
 	{Name: "snapshots", Fn: ListSnapshots},
@@ -68,6 +71,11 @@ var defaultCinderMetrics = []Metric{
 	{Name: "limits_backup_max_gb", Labels: []string{"tenant", "tenant_id"}, Fn: nil, Slow: true},
 	{Name: "limits_backup_used_gb", Labels: []string{"tenant", "tenant_id"}, Fn: nil, Slow: true},
 	{Name: "volume_type_quota_gigabytes", Labels: []string{"tenant", "tenant_id", "volume_type"}, Fn: nil, Slow: true},
+	// The quota_* metrics are filled by ListVolumeLimits from the same
+	// os-quota-sets?usage=true response, so they cost no extra API calls.
+	{Name: "quota_volumes", Labels: defaultCinderQuotaLabels, Fn: nil, Slow: true},
+	{Name: "quota_snapshots", Labels: defaultCinderQuotaLabels, Fn: nil, Slow: true},
+	{Name: "quota_backups", Labels: defaultCinderQuotaLabels, Fn: nil, Slow: true},
 }
 
 func NewCinderExporter(config *ExporterConfig, logger *slog.Logger) (*CinderExporter, error) {
@@ -341,9 +349,28 @@ func ListVolumeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch c
 
 		ch <- prometheus.MustNewConstMetric(exporter.Metrics["limits_backup_used_gb"].Metric,
 			prometheus.GaugeValue, float64(limits.BackupGigabytes.InUse), p.Name, p.ID)
+
+		collectCinderQuotaUsage(ch, exporter, "quota_volumes", limits.Volumes, p.Name, p.ID)
+		collectCinderQuotaUsage(ch, exporter, "quota_snapshots", limits.Snapshots, p.Name, p.ID)
+		collectCinderQuotaUsage(ch, exporter, "quota_backups", limits.Backups, p.Name, p.ID)
 	}
 
 	return nil
+}
+
+// collectCinderQuotaUsage emits the in_use, reserved and limit values of a
+// Cinder quota, following the layout of the Nova quota metrics. The metric is
+// skipped when it has been disabled with --disable-metric, as it is only a
+// secondary metric of ListVolumeLimits.
+func collectCinderQuotaUsage(ch chan<- prometheus.Metric, exporter *BaseOpenStackExporter, name string, q quotasets.QuotaUsage, projectName, projectID string) {
+	metric, ok := exporter.Metrics[name]
+	if !ok {
+		return
+	}
+
+	ch <- prometheus.MustNewConstMetric(metric.Metric, prometheus.GaugeValue, float64(q.InUse), "in_use", projectName, projectID)
+	ch <- prometheus.MustNewConstMetric(metric.Metric, prometheus.GaugeValue, float64(q.Reserved), "reserved", projectName, projectID)
+	ch <- prometheus.MustNewConstMetric(metric.Metric, prometheus.GaugeValue, float64(q.Limit), "limit", projectName, projectID)
 }
 
 func getVolumeListOptions(tenantID string) volumes.ListOpts {

@@ -12,6 +12,8 @@ import (
 
 	"github.com/jarcoal/httpmock"
 	"github.com/openstack-exporter/openstack-exporter/utils"
+	"github.com/prometheus/client_golang/prometheus"
+	dto "github.com/prometheus/client_model/go"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -189,6 +191,34 @@ func (suite *BaseOpenStackTestSuite) SetupTest() {
 		suite.Require().NoError(err)
 	}
 	suite.Exporter = &exporter
+}
+
+// NewTestExporter returns an additional exporter for the suite's service with
+// the given disabled metrics and slow metrics setting. It uses the same
+// fixtures as the exporter created in SetupTest.
+func (suite *BaseOpenStackTestSuite) NewTestExporter(disabledMetrics []string, disableSlowMetrics bool) OpenStackExporter {
+	novaMetadataMapping := new(utils.LabelMappingFlag)
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{}))
+	exporter, err := NewExporter(suite.ServiceName, suite.Prefix, cloudName, disabledMetrics, "public", false, disableSlowMetrics, false, false, "", "", novaMetadataMapping, 10, func() (string, error) {
+		return DEFAULT_UUID, nil
+	}, logger)
+	suite.Require().NoError(err)
+	return exporter
+}
+
+// GatherFamilies collects the exporter once and returns the metric families
+// indexed by name.
+func (suite *BaseOpenStackTestSuite) GatherFamilies(exporter OpenStackExporter) map[string]*dto.MetricFamily {
+	registry := prometheus.NewPedanticRegistry()
+	suite.Require().NoError(registry.Register(exporter))
+	gathered, err := registry.Gather()
+	suite.Require().NoError(err)
+
+	families := make(map[string]*dto.MetricFamily, len(gathered))
+	for _, family := range gathered {
+		families[family.GetName()] = family
+	}
+	return families
 }
 
 func (suite *BaseOpenStackTestSuite) teardownFixtures() {

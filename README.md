@@ -256,6 +256,9 @@ The following metrics are filtered for the domain ID provided (the others remain
 * `openstack_cinder_limits_volume_used_gb`
 * `openstack_cinder_limits_backup_max_gb`
 * `openstack_cinder_limits_backup_used_gb`
+* `openstack_cinder_quota_volumes`
+* `openstack_cinder_quota_snapshots`
+* `openstack_cinder_quota_backups`
 
 #### Keystone
 
@@ -350,6 +353,9 @@ limits_volume_max_gb | cinder
 limits_volume_used_gb |  cinder
 limits_backup_max_gb | cinder
 limits_backup_used_gb | cinder
+quota_volumes | cinder
+quota_snapshots | cinder
+quota_backups | cinder
 image_bytes | glance
 image_created_at | glance
 
@@ -372,6 +378,9 @@ openstack_cinder_limits_volume_max_gb| tenant="demo-project",tenant_id="0c4e939a
 openstack_cinder_limits_volume_used_gb| tenant="demo-project",tenant_id="0c4e939acacf4376bdcd1129f1a054ad"                                                                                                                                                                                                                                                    |40000.0 (float)| Used volume size
 openstack_cinder_pool_capacity_free_gb| name="i666testhost@FastPool01",vendor_name="EMC",volume_backend_name="VNX_Pool"                                                                                                                                                                                                                                             |636.316 (float)| Pool free capacity in GB
 openstack_cinder_pool_capacity_total_gb| name="i666testhost@FastPool01",vendor_name="EMC",volume_backend_name="VNX_Pool"                                                                                                                                                                                                                                            |1692.429 (float)| Pool total capacity in GB
+openstack_cinder_quota_backups| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|2.0 (float)| Backup count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_cinder_quota_snapshots| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|1.0 (float)| Snapshot count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
+openstack_cinder_quota_volumes| tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"|2.0 (float)| Volume count quota of the tenant, one series per type (in_use, reserved, limit; -1 = unlimited)
 openstack_cinder_snapshot_gb| id="b1323cda-8e4b-41c1-afc5-2fc791809c8c",name="test-volume-snapshot",status="available",tenant_id="bab7d5c60cd041a0a36f7c4b6e1dd978",volume_id="173f7b48-c4c1-4e70-9acc-086b39073506"|1.0 (float)| Snapshot size in GB
 openstack_cinder_snapshots| region="RegionOne"                                                                                                                                                                                                                                                                                                    |4.0 (float)| Total number of snapshots
 openstack_cinder_up| region="RegionOne"                                                                                                                                                                                                                                                                                                           |1.0 (float)| Service status (1=up, 0=down)

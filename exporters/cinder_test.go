@@ -70,6 +70,84 @@ openstack_cinder_pool_capacity_free_gb{name="i666testhost@FastPool01",vendor_nam
 # HELP openstack_cinder_pool_capacity_total_gb pool_capacity_total_gb
 # TYPE openstack_cinder_pool_capacity_total_gb gauge
 openstack_cinder_pool_capacity_total_gb{name="i666testhost@FastPool01",vendor_name="EMC",volume_backend_name="VNX_Pool"} 1692.429
+# HELP openstack_cinder_quota_backups quota_backups
+# TYPE openstack_cinder_quota_backups gauge
+openstack_cinder_quota_backups{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"} 10
+openstack_cinder_quota_backups{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="limit"} 10
+openstack_cinder_quota_backups{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="limit"} 10
+openstack_cinder_quota_backups{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="limit"} 10
+openstack_cinder_quota_backups{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="limit"} 10
+openstack_cinder_quota_backups{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="limit"} 10
+openstack_cinder_quota_backups{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="limit"} 10
+openstack_cinder_quota_backups{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="reserved"} 0
+openstack_cinder_quota_backups{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="in_use"} 2
+openstack_cinder_quota_backups{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="limit"} 10
+openstack_cinder_quota_backups{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="reserved"} 0
+# HELP openstack_cinder_quota_snapshots quota_snapshots
+# TYPE openstack_cinder_quota_snapshots gauge
+openstack_cinder_quota_snapshots{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="reserved"} 0
+openstack_cinder_quota_snapshots{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="in_use"} 1
+openstack_cinder_quota_snapshots{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="limit"} 20
+openstack_cinder_quota_snapshots{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="reserved"} 0
+# HELP openstack_cinder_quota_volumes quota_volumes
+# TYPE openstack_cinder_quota_volumes gauge
+openstack_cinder_quota_volumes{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="admin",tenant_id="0c4e939acacf4376bdcd1129f1a054ad",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="alt_demo",tenant_id="fdb8424c4e4f4c0ba32c52e2de3bd80e",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="demo",tenant_id="0cbd49cbf76d405d9c86562e1d579bd3",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="invisible_to_admin",tenant_id="5961c443439d4fcebe42643723755e9d",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="service",tenant_id="3d594eb0f04741069dbbb521635b21c7",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="swifttenanttest1",tenant_id="43ebde53fc314b1c9ea2b8c5dc744927",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="swifttenanttest2",tenant_id="2db68fed84324f29bb73130c6c2094fb",type="reserved"} 1
+openstack_cinder_quota_volumes{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="in_use"} 2
+openstack_cinder_quota_volumes{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="limit"} 10
+openstack_cinder_quota_volumes{tenant="swifttenanttest4",tenant_id="4b1eb781a47440acb8af9850103e537f",type="reserved"} 1
 # HELP openstack_cinder_snapshot_gb snapshot_gb
 # TYPE openstack_cinder_snapshot_gb gauge
 openstack_cinder_snapshot_gb{id="b1323cda-8e4b-41c1-afc5-2fc791809c8c",name="test-volume-snapshot",status="available",tenant_id="bab7d5c60cd041a0a36f7c4b6e1dd978",volume_id="173f7b48-c4c1-4e70-9acc-086b39073506"} 1
@@ -127,4 +205,28 @@ openstack_cinder_volumes 2
 func (suite *CinderTestSuite) TestCinderExporter() {
 	err := testutil.CollectAndCompare(*suite.Exporter, strings.NewReader(cinderExpectedUp))
 	assert.NoError(suite.T(), err)
+}
+
+// A secondary quota metric disabled with --disable-metric must not be emitted
+// and must not break the collection of the other quota metrics.
+func (suite *CinderTestSuite) TestCinderQuotaMetricDisabled() {
+	exporter := suite.NewTestExporter([]string{"cinder-quota_volumes"}, false)
+
+	families := suite.GatherFamilies(exporter)
+	assert.NotContains(suite.T(), families, "openstack_cinder_quota_volumes")
+	assert.Contains(suite.T(), families, "openstack_cinder_quota_snapshots")
+	assert.Contains(suite.T(), families, "openstack_cinder_quota_backups")
+	assert.Contains(suite.T(), families, "openstack_cinder_limits_volume_max_gb")
+	assert.Len(suite.T(), families["openstack_cinder_quota_snapshots"].GetMetric(), 8*3)
+}
+
+// The quota metrics are slow and must be dropped by --disable-slow-metrics.
+func (suite *CinderTestSuite) TestCinderQuotaSlowMetricsDisabled() {
+	exporter := suite.NewTestExporter(nil, true)
+
+	families := suite.GatherFamilies(exporter)
+	for _, name := range []string{"quota_volumes", "quota_snapshots", "quota_backups", "limits_volume_max_gb"} {
+		assert.NotContains(suite.T(), families, "openstack_cinder_"+name)
+	}
+	assert.Contains(suite.T(), families, "openstack_cinder_volumes")
 }
