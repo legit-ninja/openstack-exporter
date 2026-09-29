@@ -819,11 +819,13 @@ func ListNetworkQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch 
 		return err
 	}
 
+	projectErrors := newProjectLoopErrors(exporter, "quotas", len(allProjects))
 	for _, p := range allProjects {
 		// quota are obtained from the neutron API, so now we can just use this exporter's client
 		quota, err := quotas.GetDetail(ctx, exporter.ClientV2, p.ID).Extract()
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		collectNeutronQuotaDetail(ch, exporter.Metrics["quota_network"].Metric, quota.Network, p.Name, p.ID)
@@ -838,5 +840,5 @@ func ListNetworkQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch 
 
 	}
 
-	return nil
+	return projectErrors.err()
 }

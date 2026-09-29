@@ -288,10 +288,12 @@ func ListQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch chan<- 
 		return err
 	}
 
+	projectErrors := newProjectLoopErrors(exporter, "quotas", len(allProjects))
 	for _, p := range allProjects {
 		quotaSet, err := quotasets.GetDetail(ctx, exporter.ClientV2, p.ID).Extract()
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		collectNovaQuotaDetail(ch, exporter.Metrics["quota_cores"].Metric, quotaSet.Cores, p.Name, p.ID)
@@ -310,7 +312,7 @@ func ListQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch chan<- 
 		collectNovaQuotaDetail(ch, exporter.Metrics["quota_injected_files"].Metric, quotaSet.InjectedFiles, p.Name, p.ID)
 
 	}
-	return nil
+	return projectErrors.err()
 }
 
 func ListAZs(ctx context.Context, exporter *BaseOpenStackExporter, ch chan<- prometheus.Metric) error {
@@ -448,6 +450,7 @@ func ListComputeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch 
 		return err
 	}
 
+	projectErrors := newProjectLoopErrors(exporter, "limits", len(allProjects))
 	for _, p := range allProjects {
 		// Limits are obtained from the nova API, so now we can just use this exporter's client
 		limitGetOpts := limits.GetOpts{TenantID: p.ID}
@@ -457,7 +460,8 @@ func ListComputeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch 
 
 		limits, err := limits.Get(ctx, exporter.ClientV2, limitGetOpts).Extract()
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		ch <- prometheus.MustNewConstMetric(exporter.Metrics["limits_vcpus_max"].Metric,
@@ -479,7 +483,7 @@ func ListComputeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch 
 			prometheus.GaugeValue, float64(limits.Absolute.MaxTotalInstances), p.Name, p.ID)
 	}
 
-	return nil
+	return projectErrors.err()
 }
 
 // ListUsage add metrics about usage

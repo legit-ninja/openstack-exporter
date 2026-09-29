@@ -188,10 +188,12 @@ func ListShareQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch ch
 	client := *exporter.ClientV2
 	client.Microversion = manilaQuotaDetailMicroversion
 
+	projectErrors := newProjectLoopErrors(exporter, "quotas", len(allProjects))
 	for _, p := range allProjects {
 		quotaSet, err := getManilaQuotaSetDetail(ctx, &client, p.ID)
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		collectManilaQuotaDetail(ch, exporter, "quota_shares", quotaSet.Shares, p.Name, p.ID)
@@ -201,7 +203,7 @@ func ListShareQuotas(ctx context.Context, exporter *BaseOpenStackExporter, ch ch
 		collectManilaQuotaDetail(ch, exporter, "quota_share_networks", quotaSet.ShareNetworks, p.Name, p.ID)
 	}
 
-	return nil
+	return projectErrors.err()
 }
 
 // collectManilaQuotaDetail emits the in_use, reserved and limit values of a

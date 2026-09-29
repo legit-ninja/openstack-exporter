@@ -378,3 +378,12 @@ func (suite *NeutronTestSuite) TestNeutronExporter() {
 	err := testutil.CollectAndCompare(*suite.Exporter, strings.NewReader(neutronExpectedUp))
 	assert.NoError(suite.T(), err)
 }
+
+// A failing project must be skipped instead of dropping the metrics of all
+// projects.
+func (suite *NeutronTestSuite) TestNeutronQuotasSkipFailingProject() {
+	suite.FailRequest("/neutron/v2.0/quotas/"+failingProjectID+"/details.json", 404)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_neutron_quota_network", "openstack_neutron_quota_floatingip")
+}

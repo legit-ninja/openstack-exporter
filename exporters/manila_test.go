@@ -255,3 +255,12 @@ func jsonFixtureResponse(req *http.Request, data []byte) *http.Response {
 	resp.Request = req
 	return resp
 }
+
+// A failing project must be skipped instead of dropping the metrics of all
+// projects.
+func (suite *ManilaTestSuite) TestManilaQuotasSkipFailingProject() {
+	suite.FailRequest("/shares/v2/quota-sets/"+failingProjectID+"/detail", 404)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_sharev2_quota_shares", "openstack_sharev2_quota_share_networks")
+}

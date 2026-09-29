@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"log/slog"
@@ -235,6 +236,54 @@ func (suite *BaseOpenStackTestSuite) GatherFamilies(exporter OpenStackExporter) 
 		families[family.GetName()] = family
 	}
 	return families
+}
+
+// testProjectIDs are the IDs of the projects in the identity_projects fixture.
+var testProjectIDs = []string{
+	"0c4e939acacf4376bdcd1129f1a054ad",
+	"0cbd49cbf76d405d9c86562e1d579bd3",
+	"2db68fed84324f29bb73130c6c2094fb",
+	"3d594eb0f04741069dbbb521635b21c7",
+	"43ebde53fc314b1c9ea2b8c5dc744927",
+	"4b1eb781a47440acb8af9850103e537f",
+	"5961c443439d4fcebe42643723755e9d",
+	"fdb8424c4e4f4c0ba32c52e2de3bd80e",
+}
+
+// failingProjectID is the project whose requests fail in the per-project
+// error handling tests (project "demo").
+const failingProjectID = "0cbd49cbf76d405d9c86562e1d579bd3"
+
+// FailRequest makes GET requests to resource fail with the given status code.
+func (suite *BaseOpenStackTestSuite) FailRequest(resource string, statusCode int) {
+	httpmock.RegisterResponder("GET", suite.MakeURL(resource, ""),
+		httpmock.NewStringResponder(statusCode, `{"error": "injected failure"}`))
+}
+
+// AssertProjectSkipped checks that the families are emitted for every project
+// but the failing one, and that the exporter is still reported up.
+func (suite *BaseOpenStackTestSuite) AssertProjectSkipped(families map[string]*dto.MetricFamily, names ...string) {
+	for _, name := range names {
+		suite.Require().Contains(families, name)
+
+		projectIDs := map[string]bool{}
+		for _, metric := range families[name].GetMetric() {
+			for _, label := range metric.GetLabel() {
+				if label.GetName() == "tenant_id" {
+					projectIDs[label.GetValue()] = true
+				}
+			}
+		}
+
+		suite.NotContains(projectIDs, failingProjectID, name)
+		suite.Len(projectIDs, len(testProjectIDs)-1, name)
+	}
+
+	for name, family := range families {
+		if strings.HasSuffix(name, "_up") {
+			suite.Equal(1.0, family.GetMetric()[0].GetGauge().GetValue(), name)
+		}
+	}
 }
 
 func (suite *BaseOpenStackTestSuite) teardownFixtures() {

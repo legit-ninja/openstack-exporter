@@ -509,3 +509,19 @@ func (suite *NovaTestSuite) TestNovaExporter() {
 	err := testutil.CollectAndCompare(*suite.Exporter, strings.NewReader(novaExpectedUp))
 	assert.NoError(suite.T(), err)
 }
+
+// A failing project must be skipped instead of dropping the metrics of all
+// projects.
+func (suite *NovaTestSuite) TestNovaQuotasSkipFailingProject() {
+	suite.FailRequest("/compute/os-quota-sets/"+failingProjectID+"/detail", 404)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_nova_quota_cores", "openstack_nova_quota_ram")
+}
+
+func (suite *NovaTestSuite) TestNovaLimitsSkipFailingProject() {
+	suite.FailRequest("/compute/limits?tenant_id="+failingProjectID, 500)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_nova_limits_vcpus_max", "openstack_nova_limits_memory_used")
+}

@@ -161,3 +161,12 @@ func (suite *LoadbalancerTestSuite) TestLoadbalancerQuotaMetricDisabled() {
 	// in_use and limit for each of the 8 projects.
 	assert.Len(suite.T(), families["openstack_loadbalancer_quota_loadbalancer"].GetMetric(), 8*2)
 }
+
+// A failing project must be skipped instead of dropping the metrics of all
+// projects.
+func (suite *LoadbalancerTestSuite) TestLoadbalancerQuotasSkipFailingProject() {
+	suite.FailRequest("/loadbalancer/v2.0/quotas/"+failingProjectID, 404)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_loadbalancer_quota_loadbalancer", "openstack_loadbalancer_quota_l7rule")
+}

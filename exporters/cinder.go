@@ -313,17 +313,20 @@ func ListVolumeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch c
 		return err
 	}
 
+	projectErrors := newProjectLoopErrors(exporter, "limits", len(allProjects))
 	for _, p := range allProjects {
 		// Limits are obtained from the cinder API, so now we can just use this exporter's client
 		limits, err := quotasets.GetUsage(ctx, exporter.ClientV2, p.ID).Extract()
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		// Quotas are obtained from the cinder API
 		quotas_p, err := quotasets.Get(ctx, exporter.ClientV2, p.ID).Extract()
 		if err != nil {
-			return err
+			projectErrors.skip(p, err)
+			continue
 		}
 		quotas := *quotas_p
 
@@ -355,7 +358,7 @@ func ListVolumeLimits(ctx context.Context, exporter *BaseOpenStackExporter, ch c
 		collectCinderQuotaUsage(ch, exporter, "quota_backups", limits.Backups, p.Name, p.ID)
 	}
 
-	return nil
+	return projectErrors.err()
 }
 
 // collectCinderQuotaUsage emits the in_use, reserved and limit values of a

@@ -389,6 +389,11 @@ quota_share_networks | sharev2
 image_bytes | glance
 image_created_at | glance
 
+The per-project collectors (Nova quotas and limits, Cinder limits and quotas, Neutron quotas, load balancer quotas
+and share quotas) skip a project whose request fails, for example a project deleted during the collection, and log
+a warning for it. The metrics of the other projects are still exported. The collection only fails when the requests
+of every project fail.
+
 #### Deprecated Metrics
 
 Metric name |  Since Version | Removed in Version | Notes

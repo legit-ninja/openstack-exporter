@@ -240,6 +240,40 @@ func GetProjects(ctx context.Context, exporter *BaseOpenStackExporter) ([]projec
 	return projects.ExtractProjects(allPagesProject)
 }
 
+// projectLoopErrors lets a collector that iterates over the projects returned
+// by GetProjects skip and log a failing project (for example one deleted after
+// the project listing) instead of dropping the metrics of all projects. The
+// collection still fails when every project failed, so that a service-wide
+// error is reported as before.
+type projectLoopErrors struct {
+	exporter  *BaseOpenStackExporter
+	collector string
+	total     int
+	failed    int
+	lastErr   error
+}
+
+func newProjectLoopErrors(exporter *BaseOpenStackExporter, collector string, total int) *projectLoopErrors {
+	return &projectLoopErrors{exporter: exporter, collector: collector, total: total}
+}
+
+// skip records and logs the failure of a project.
+func (e *projectLoopErrors) skip(p projects.Project, err error) {
+	e.failed++
+	e.lastErr = err
+	e.exporter.logger.Warn("Failed to collect project metrics, skipping project",
+		"exporter", e.exporter.Name, "collector", e.collector,
+		"project", p.Name, "project_id", p.ID, "err", err)
+}
+
+// err returns an error when every project failed, nil otherwise.
+func (e *projectLoopErrors) err() error {
+	if e.total > 0 && e.failed == e.total {
+		return fmt.Errorf("%s failed for all %d projects, last error: %w", e.collector, e.total, e.lastErr)
+	}
+	return nil
+}
+
 // GetEndpointType return openstack endpoints for configured type
 func GetEndpointTypeV2(endpointType string) gophercloudv2.Availability {
 	if endpointType == "internal" || endpointType == "internalURL" {

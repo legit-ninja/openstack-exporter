@@ -208,13 +208,15 @@ func ListLoadbalancerQuotas(ctx context.Context, exporter *BaseOpenStackExporter
 		u.pools += len(lb.Pools)
 	}
 
+	projectErrors := newProjectLoopErrors(exporter, "quotas", len(allProjects))
 	for _, p := range allProjects {
 		quota, err := quotas.Get(ctx, exporter.ClientV2, p.ID).Extract()
-		if err != nil {
-			return err
+		if err == nil && quota == nil {
+			err = fmt.Errorf("empty load balancer quota response for project %s", p.ID)
 		}
-		if quota == nil {
-			return fmt.Errorf("empty load balancer quota response for project %s", p.ID)
+		if err != nil {
+			projectErrors.skip(p, err)
+			continue
 		}
 
 		u := usage[p.ID]
@@ -227,7 +229,7 @@ func ListLoadbalancerQuotas(ctx context.Context, exporter *BaseOpenStackExporter
 		collectLoadbalancerQuota(ch, exporter, "quota_l7rule", quota.L7Rule, nil, p.Name, p.ID)
 	}
 
-	return nil
+	return projectErrors.err()
 }
 
 // collectLoadbalancerQuota emits the limit of an Octavia quota and, when the

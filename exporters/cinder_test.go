@@ -230,3 +230,32 @@ func (suite *CinderTestSuite) TestCinderQuotaSlowMetricsDisabled() {
 	}
 	assert.Contains(suite.T(), families, "openstack_cinder_volumes")
 }
+
+// A failing project must be skipped instead of dropping the metrics of all
+// projects.
+func (suite *CinderTestSuite) TestCinderLimitsSkipFailingProject() {
+	suite.FailRequest("/volumes/os-quota-sets/"+failingProjectID+"?usage=true", 404)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_cinder_limits_volume_max_gb", "openstack_cinder_quota_volumes",
+		"openstack_cinder_volume_type_quota_gigabytes")
+}
+
+func (suite *CinderTestSuite) TestCinderLimitsSkipFailingProjectQuotaSet() {
+	suite.FailRequest("/volumes/os-quota-sets/"+failingProjectID, 500)
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	suite.AssertProjectSkipped(families, "openstack_cinder_limits_volume_max_gb", "openstack_cinder_quota_backups")
+}
+
+// When every project fails, the collection fails as before.
+func (suite *CinderTestSuite) TestCinderLimitsAllProjectsFailing() {
+	for _, projectID := range testProjectIDs {
+		suite.FailRequest("/volumes/os-quota-sets/"+projectID+"?usage=true", 500)
+	}
+
+	families := suite.GatherFamilies(*suite.Exporter)
+	assert.NotContains(suite.T(), families, "openstack_cinder_limits_volume_max_gb")
+	assert.NotContains(suite.T(), families, "openstack_cinder_quota_volumes")
+	assert.Contains(suite.T(), families, "openstack_cinder_volumes")
+}
